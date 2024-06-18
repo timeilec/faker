@@ -19,6 +19,17 @@ __author__ = "joke2k"
 
 T = TypeVar("T")
 
+# init branch coverage for chosen functions
+branch_coverage = {
+    "print_doc_1": False,
+    "print_doc_2": False,
+    "print_doc_3": False,
+    "print_doc_4": False,
+    "print_doc_5": False,
+    "print_doc_6": False,
+    "print_doc_7": False,
+    "command": False
+}
 
 def print_provider(
     doc: Documentor,
@@ -68,8 +79,10 @@ def print_doc(
     includes: Optional[List[str]] = None,
 ) -> None:
     if args is None:
+        branch_coverage["print_doc_1"] = True
         args = []
-    if output is None:
+    if output is None: 
+        branch_coverage["print_doc_2"] = True
         output = sys.stdout
     fake = Faker(locale=lang, includes=includes)
     fake.seed_instance(seed)
@@ -79,7 +92,9 @@ def print_doc(
     base_provider_formatters = list(dir(BaseProvider))
 
     if provider_or_field:
+        branch_coverage["print_doc_3"] = True
         if "." in provider_or_field:
+            branch_coverage["print_doc_4"] = True
             parts = provider_or_field.split(".")
             locale = parts[-2] if parts[-2] in AVAILABLE_LOCALES else lang
             fake = Faker(locale, providers=[provider_or_field], includes=includes)
@@ -93,12 +108,14 @@ def print_doc(
                 output=output,
             )
         else:
+            branch_coverage["print_doc_5"] = True
             try:
                 print(fake.format(provider_or_field, *args), end="", file=output)
             except AttributeError:
                 raise ValueError(f'No faker found for "{provider_or_field}({args})"')
 
     else:
+        branch_coverage["print_doc_6"] = True
         doc = documentor.Documentor(fake)
         unsupported: List[str] = []
 
@@ -108,6 +125,7 @@ def print_doc(
             except exceptions.UnsupportedFeature as e:
                 unsupported.append(e.name)
             else:
+                branch_coverage["print_doc_7"] = True
                 break
 
         for provider, fakers in formatters:
@@ -280,6 +298,7 @@ examples:
 def execute_from_command_line(argv: Optional[str] = None) -> None:
     """A simple method that runs a Command."""
     if sys.stdout.encoding is None:
+        branch_coverage["command"] = True
         print(
             "please set python env PYTHONIOENCODING=UTF-8, example: "
             "export PYTHONIOENCODING=UTF-8, when writing to stdout",
