@@ -12,6 +12,11 @@ from faker.factory import Factory
 from faker.generator import random
 from faker.utils import decorators, text
 
+from faker.cli import branch_coverage
+from pathlib import Path
+import json
+
+TEST_DIR = Path(__file__).resolve().parent
 
 class FactoryTestCase(unittest.TestCase):
     def setUp(self):
@@ -22,6 +27,7 @@ class FactoryTestCase(unittest.TestCase):
 
         output = io.StringIO()
         print_doc(output=output)
+        print_doc(output=None)
         print_doc("address", output=output)
         print_doc("faker.providers.person.it_IT", output=output)
         assert output.getvalue()
@@ -49,6 +55,22 @@ class FactoryTestCase(unittest.TestCase):
             assert sys.stdout.getvalue()
         finally:
             sys.stdout = orig_stdout
+
+    def test_encoding_none(self):
+            from faker.cli import execute_from_command_line
+
+            class StdOutMock:
+                def __init__(self):
+                    self.encoding = None
+            orig_stdout = sys.stdout
+            try:
+                sys.stdout = StdOutMock()
+                with self.assertRaises(SystemExit) as cm:
+                    execute_from_command_line(["faker", "address"])
+
+                self.assertEqual(cm.exception.code, 1)
+            finally:
+                sys.stdout = orig_stdout
 
     def test_cli_seed(self):
         from faker.cli import Command
@@ -351,3 +373,6 @@ class FactoryTestCase(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()  # pragma: no cover
+
+def test_branch_coverage():
+    (TEST_DIR / "branch_coverage.json").write_text(json.dumps(branch_coverage))
