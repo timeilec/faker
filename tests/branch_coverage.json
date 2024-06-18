@@ -1,1 +1,23 @@
-{"print_doc_1": true, "print_doc_2": true, "print_doc_3": true, "print_doc_4": true, "print_doc_5": true, "print_doc_6": true, "print_doc_7": true, "command": true}
+{
+  "get_args_1": true,
+  "get_args_2": true,
+  "set_args_1": true,
+  "set_args_2": true,
+  "set_args_3": true,
+  "set_args_4": true,
+  "del_args_1": true,
+  "del_args_2": true,
+  "del_args_3": true,
+  "del_args_4": true,
+  "add_provider_1": true,
+  "add_provider_2": true,
+  "add_provider_3": true,
+  "seed_instance_1": true,
+  "get_form_1": true,
+  "get_form_2": true,
+  "format_token_1": true,
+  "format_token_2": true,
+  "add_provider_4": true,
+  "provider_1": true,
+  "provider_2": true
+}
