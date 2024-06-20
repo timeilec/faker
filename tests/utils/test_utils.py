@@ -59,13 +59,13 @@ class UtilsTestCase(unittest.TestCase):
         result = get_path(faker)
         assert isinstance(result, str)
 
-    # def test_get_path_frozen(self):
-    #     result = get_path(faker, True)
-    #     assert isinstance(result, str)
-    #
-    # def test_list_module(self):
-    #     result = list_module(faker, True)
-    #     assert isinstance(result, list)
+    def test_get_path_frozen(self):
+        result = get_path(faker, True)
+        assert isinstance(result, str)
+
+    def test_list_module(self):
+        result = list_module(faker, True)
+        assert isinstance(result, list)
 
     def test_find_available_locales(self):
         result = find_available_locales(PROVIDERS)
