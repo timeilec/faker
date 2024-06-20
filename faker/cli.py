@@ -28,7 +28,12 @@ branch_coverage = {
     "print_doc_5": False,
     "print_doc_6": False,
     "print_doc_7": False,
-    "command": False
+    "print_doc_8": False,
+    "print_doc_9": False,
+    "print_doc_10": False,
+    "print_doc_11": False,
+    "command": False,
+    "command2": False
 }
 
 def print_provider(
@@ -110,8 +115,10 @@ def print_doc(
         else:
             branch_coverage["print_doc_5"] = True
             try:
+                branch_coverage["print_doc_9"] = True
                 print(fake.format(provider_or_field, *args), end="", file=output)
             except AttributeError:
+                branch_coverage["print_doc_11"] = True
                 raise ValueError(f'No faker found for "{provider_or_field}({args})"')
 
     else:
@@ -121,8 +128,10 @@ def print_doc(
 
         while True:
             try:
+                branch_coverage["print_doc_8"] = True
                 formatters = doc.get_formatters(with_args=True, with_defaults=True, excludes=unsupported)
             except exceptions.UnsupportedFeature as e:
+                branch_coverage["print_doc_10"] = True
                 unsupported.append(e.name)
             else:
                 branch_coverage["print_doc_7"] = True
@@ -305,7 +314,7 @@ def execute_from_command_line(argv: Optional[str] = None) -> None:
             file=sys.stderr,
         )
         exit(1)
-
+    branch_coverage["command2"] = True
     command = Command(argv)
     command.execute()
 

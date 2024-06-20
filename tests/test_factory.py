@@ -14,6 +14,7 @@ from faker.utils import decorators, text
 
 from faker.cli import branch_coverage
 from pathlib import Path
+import os
 import json
 
 TEST_DIR = Path(__file__).resolve().parent
@@ -56,7 +57,7 @@ class FactoryTestCase(unittest.TestCase):
         finally:
             sys.stdout = orig_stdout
 
-    def test_encoding_none(self):
+    def test_cmd_command_no_encode(self):
             from faker.cli import execute_from_command_line
 
             class StdOutMock:
@@ -66,12 +67,41 @@ class FactoryTestCase(unittest.TestCase):
             try:
                 sys.stdout = StdOutMock()
                 with self.assertRaises(SystemExit) as cm:
-                    execute_from_command_line(["faker", "address"])
+                    execute_from_command_line(["faker", "name"])
 
                 self.assertEqual(cm.exception.code, 1)
             finally:
                 sys.stdout = orig_stdout
 
+    def test_cmd_command_with_encode(self):
+        from faker.cli import execute_from_command_line
+        class StdOutMock:
+            def __init__(self):
+                self.encoding = 'utf-8'
+                self.output = ""
+
+            def write(self, msg):
+                self.output += msg
+
+            def flush(self):
+                pass
+
+        orig_stdout = sys.stdout
+        orig_env = os.environ.copy()
+
+        try:
+            os.environ["PYTHONIOENCODING"] = "UTF-8"
+
+            sys.stdout = StdOutMock()
+            execute_from_command_line(["faker", "name"])
+
+            print(sys.stdout.output)
+            self.assertTrue(" " in sys.stdout.output)
+        finally:
+            sys.stdout = orig_stdout
+            os.environ.clear()
+            os.environ.update(orig_env)
+        
     def test_cli_seed(self):
         from faker.cli import Command
 
