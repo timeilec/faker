@@ -12,7 +12,7 @@ from faker.factory import Factory
 from faker.generator import random
 from faker.utils import decorators, text
 
-from faker.cli import branch_coverage
+from faker.cli import branch_coverage1 as branch_coverage
 from pathlib import Path
 import os
 import json
@@ -63,6 +63,13 @@ class FactoryTestCase(unittest.TestCase):
             class StdOutMock:
                 def __init__(self):
                     self.encoding = None
+                    self.output = ""
+
+                def write(self, msg):
+                    self.output += msg
+
+                def flush(self):
+                    pass
             orig_stdout = sys.stdout
             try:
                 sys.stdout = StdOutMock()
@@ -405,4 +412,4 @@ if __name__ == "__main__":
     unittest.main()  # pragma: no cover
 
 def test_branch_coverage():
-    (TEST_DIR / "branch_coverage.json").write_text(json.dumps(branch_coverage))
+    (TEST_DIR / "branch_coverage1.json").write_text(json.dumps(branch_coverage))
